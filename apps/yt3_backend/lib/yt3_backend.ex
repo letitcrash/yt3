@@ -1,18 +1,7 @@
 defmodule YT3 do
-  @moduledoc """
-  Documentation for YT3.
-  """
+  use Application
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> YT3.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, _args) do
+    YT3.Supervisor.start_link
   end
 end
