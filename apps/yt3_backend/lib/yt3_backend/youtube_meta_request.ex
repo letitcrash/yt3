@@ -1,4 +1,4 @@
-defmodule YT3.MetaRequest do
+defmodule YT3.Fetcher.YoutubeMetaRequest do
   require HTTPoison.Base
   use HTTPoison.Base
 
