@@ -1,9 +1,9 @@
-defmodule YT3.Fetcher do
+defmodule YT3.MetaFetcher do
   use GenServer
   alias YT3.Fetcher.YoutubeMetaRequest
 
   def start_link() do
-    GenServer.start_link(__MODULE__, :ok, name: :fetcher)
+    GenServer.start_link(__MODULE__, :ok, name: :meta_fetcher)
   end
 
   def init(_) do
@@ -13,15 +13,15 @@ defmodule YT3.Fetcher do
   def get(provider, id) do
     case provider do
       :youtube -> 
-        GenServer.call(:fetcher, {:get_youtube_song, id})
+        GenServer.call(:meta_fetcher, {:get_youtube_meta, id})
       _-> 
         {:error, "#{provider} does not exist or not implemented yet"}
     end
   end
 
-  def handle_call({:get_youtube_song, id}, _from, state) do
+  def handle_call({:get_youtube_meta, id}, _from, state) do
     with {:ok, response} <- YoutubeMetaRequest.get(id) do
-      {:reply, response.body, state}
+      {:reply, {:ok, response.body}, state}
     else
       err -> err
     end
