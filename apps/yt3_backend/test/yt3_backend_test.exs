@@ -12,4 +12,8 @@ defmodule YT3Test do
   test "check Youtube fetcher" do
     assert YT3.Fetcher.get(:youtube, "mSxnoJThJwk") == successful_youtube_response()
   end
+  
+  test "check Youtube downloader" do
+    assert YT3.Downloader.get(:youtube, "cMtaFMZxOjk") == "cMtaFMZxOjk"
+  end
 end
