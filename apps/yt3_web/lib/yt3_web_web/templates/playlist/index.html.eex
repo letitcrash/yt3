@@ -1,0 +1,26 @@
+<h2>Listing Playlists</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for playlist <- @playlists do %>
+    <tr>
+      <td><%= playlist.name %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: playlist_path(@conn, :show, playlist), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: playlist_path(@conn, :edit, playlist), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: playlist_path(@conn, :delete, playlist), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Playlist", to: playlist_path(@conn, :new) %></span>

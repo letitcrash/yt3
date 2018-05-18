@@ -17,6 +17,10 @@ defmodule Yt3WebWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/users", UserController
+    resources "/playlists", PlaylistController
+    resources "/sources", SourceController
+
   end
 
   # Other scopes may use custom stacks.
