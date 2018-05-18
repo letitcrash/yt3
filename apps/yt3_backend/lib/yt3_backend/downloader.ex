@@ -19,7 +19,13 @@ defmodule YT3.Downloader do
   end
   
   def handle_call({:download_youtube_audio, url}, _from, state) do
-    {:reply, url, state} 
+    filepath = "/home/paul/tmp/yt3/" <> UUID.uuid1() <> ".mp3"
+
+    args = ["--extract-audio", "--audio-format", "mp3", "-o", filepath, url]
+
+    response = System.cmd("youtube-dl", args)
+
+    {:reply, {:ok, response}, state} 
   end
 end
 
