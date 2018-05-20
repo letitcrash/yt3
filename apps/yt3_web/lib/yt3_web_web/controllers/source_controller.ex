@@ -17,6 +17,7 @@ defmodule Yt3WebWeb.SourceController do
   def create(conn, %{"source" => source_params}) do
     case Media.create_source(source_params) do
       {:ok, source} ->
+      YT3.proceed_source(source.url, source.id)
         conn
         |> put_flash(:info, "Source created successfully.")
         |> redirect(to: source_path(conn, :show, source))

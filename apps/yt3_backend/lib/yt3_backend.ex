@@ -6,25 +6,20 @@ defmodule YT3 do
   def start(_type, _args) do
     YT3.Supervisor.start_link
   end
-  
-  @spec get_meta(String.t) :: %Task{}
-  def get_meta(url) do
-    with {:ok, provider, id} <- process_url(url) do
-      Task.async(fn ->
-        MetaFetcher.get(provider, id)
-      end)
-    else
-      err -> err
-    end
-  end
 
-  def get_audio_file(url) do
-    with {:ok, provider, _id} <- process_url(url) do
-      Task.async(fn ->
-        Downloader.get(provider, url)
+  def proceed_source(url, id) do
+    with {:ok, provider, ext_id} <- process_url(url) do
+      Task.start(fn ->
+        with {:ok, meta} <- MetaFetcher.get(provider, ext_id) do
+          Yt3WebWeb.Endpoint.broadcast! "sources:ready", "meta", %{id: id, meta: meta}
+        end
+      end) 
+
+      Task.start(fn ->
+        with {:ok, file} <- Downloader.get(provider, url) do
+          Yt3WebWeb.Endpoint.broadcast! "sources:ready", "file", %{id: id, file: file}
+        end
       end)
-    else
-      err -> err
     end
   end
 

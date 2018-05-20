@@ -22,10 +22,9 @@ defmodule YT3.Downloader do
     filepath = "/home/paul/tmp/yt3/" <> UUID.uuid1() <> ".mp3"
 
     args = ["--extract-audio", "--audio-format", "mp3", "-o", filepath, url]
+    _response = System.cmd("youtube-dl", args)
 
-    response = System.cmd("youtube-dl", args)
-
-    {:reply, {:ok, response}, state} 
+    {:reply, {:ok, filepath}, state} 
   end
 end
 

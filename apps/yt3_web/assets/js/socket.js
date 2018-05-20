@@ -54,15 +54,7 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("audio:ready", {})
-let urlInput = document.querySelector("#url")
-
-urlInput.addEventListener("keypress", event => {
-  if(event.keyCode === 13){
-    channel.push("new_url", {url: urlInput.value})
-    urlInput.value = ""
-  }
-})
+let channel = socket.channel("sources:ready", {})
 
 channel.on("meta", payload => {
   console.log(payload)

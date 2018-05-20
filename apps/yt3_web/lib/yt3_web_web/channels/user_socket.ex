@@ -2,7 +2,7 @@ defmodule Yt3WebWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "audio:*", Yt3WebWeb.AudioChannel
+  channel "sources:*", Yt3WebWeb.SourceChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

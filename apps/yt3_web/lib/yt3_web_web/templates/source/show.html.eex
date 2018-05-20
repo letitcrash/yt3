@@ -1,6 +1,6 @@
 <h2>Show Source</h2>
 
-<ul>
+<ul id=<%= @source.id %>>
 
   <li>
     <strong>Url:</strong>
