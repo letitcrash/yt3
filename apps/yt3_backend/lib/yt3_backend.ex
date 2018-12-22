@@ -8,7 +8,6 @@ defmodule YT3 do
   end
 
   def proceed_source(url, id) do
-    IO.inspect url
     with {:ok, provider, ext_id} <- process_url(url) do
       Task.start(fn ->
         with {:ok, meta} <- MetaFetcher.get(provider, ext_id) do
@@ -25,6 +24,7 @@ defmodule YT3 do
   end
 
   defp process_url(url) do
+    IO.inspect URI.parse(url)
     case URI.parse(url) do
       %URI{
         authority: "www.youtube.com",
@@ -34,6 +34,14 @@ defmodule YT3 do
         query: "v=" <> id
       } -> 
         {:ok, :youtube, id}
+        
+      %URI{
+        authority: "youtu.be",
+        host: "youtu.be",
+        path: id,
+        scheme: "https"
+      } -> 
+        {:ok, :youtube, String.slice(id, 1..-1)}
         
       %URI{
         authority: "soundcloud.com",
