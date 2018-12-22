@@ -21,25 +21,57 @@ const playButton = document.getElementById("play")
 const urlInput = document.getElementById("url")
 const errorMessageElement = document.getElementById("error")
 const infoMessageElement = document.getElementById("info")
+const audio = document.createElement('audio');
+const stopSVGElement = ` 
+  <svg class="video-overlay-play-button" viewBox="0 0 400 400" alt="Play">
+    <rect x="100" y="100" width="200" height="200" fill="#fff"/>
+  </svg>
+`
+
+const playSVGElement = `
+  <svg class="video-overlay-play-button" viewBox="0 0 400 400" alt="Play">
+    <polygon points="140, 110 140, 290 290, 200" fill="#fff"/>
+  </svg>
+`
 
 channel.join()
 
 channel.on("meta", payload => {
   console.log(payload)
+  urlInput.disabled = true
+  urlInput.value = payload.meta.title
 })
+
+const playEventHandler = (e) => {
+  if(urlInput.value && !urlInput.disabled) {
+    channel.push("url", {url: urlInput.value})
+  }
+}
+
+const stopEventHandler = (e) => {
+  audio.pause()
+  playButton.removeEventListener("click", stopEventHandler)
+  playButton.addEventListener("click", resumeEventHandler)
+  playButton.innerHTML = playSVGElement
+}
+
+const resumeEventHandler = (e) => {
+  audio.play()
+  playButton.removeEventListener("click", resumeEventHandler)
+  playButton.addEventListener("click", stopEventHandler)
+  playButton.innerHTML = stopSVGElement
+}
 
 channel.on("file", payload => {
   console.log(payload)
   //var audio = new Audio("play?audio=" + payload.file)
   //audio.play()
-  var audio = document.createElement('audio');
   audio.src = 'play?audio=' + payload.file
   audio.play();
+  playButton.innerHTML = stopSVGElement
+  playButton.removeEventListener("click", playEventHandler)
+  playButton.addEventListener("click", stopEventHandler)
 })
 
-playButton.addEventListener("click", (e) => {
-  if(urlInput.value) {
-    channel.push("url", {url: urlInput.value})
-  }
-})
+playButton.addEventListener("click", playEventHandler)
 
