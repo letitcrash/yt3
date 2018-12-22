@@ -8,6 +8,7 @@ defmodule YT3 do
   end
 
   def proceed_source(url, id) do
+    IO.inspect url
     with {:ok, provider, ext_id} <- process_url(url) do
       Task.start(fn ->
         with {:ok, meta} <- MetaFetcher.get(provider, ext_id) do

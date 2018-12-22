@@ -17,8 +17,8 @@ defmodule Yt3UiWeb.SourcesChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (sources:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+  def handle_in("url", %{"url" => url}, socket) do
+    YT3.proceed_source(url, 1)
     {:noreply, socket}
   end
 

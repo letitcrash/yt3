@@ -17,6 +17,10 @@ import "phoenix_html"
 import socket from "./socket"
 
 const channel = socket.channel("sources:ready", {})
+const playButton = document.getElementById("play")
+const urlInput = document.getElementById("url")
+const errorMessageElement = document.getElementById("error")
+const infoMessageElement = document.getElementById("info")
 
 channel.join()
 
@@ -32,3 +36,10 @@ channel.on("file", payload => {
   audio.src = 'play?audio=' + payload.file
   audio.play();
 })
+
+playButton.addEventListener("click", (e) => {
+  if(urlInput.value) {
+    channel.push("url", {url: urlInput.value})
+  }
+})
+
