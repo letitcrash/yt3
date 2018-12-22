@@ -11,13 +11,13 @@ defmodule YT3 do
     with {:ok, provider, ext_id} <- process_url(url) do
       Task.start(fn ->
         with {:ok, meta} <- MetaFetcher.get(provider, ext_id) do
-          Yt3WebWeb.Endpoint.broadcast! "sources:ready", "meta", %{id: id, meta: meta}
+          Yt3UiWeb.Endpoint.broadcast! "sources:ready", "meta", %{id: id, meta: meta}
         end
       end) 
 
       Task.start(fn ->
         with {:ok, file} <- Downloader.get(provider, url) do
-          Yt3WebWeb.Endpoint.broadcast! "sources:ready", "file", %{id: id, file: file}
+          Yt3UiWeb.Endpoint.broadcast! "sources:ready", "file", %{id: id, file: file}
         end
       end)
     end
