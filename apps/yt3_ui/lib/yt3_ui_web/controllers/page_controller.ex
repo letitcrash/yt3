@@ -19,6 +19,12 @@ defmodule Yt3UiWeb.PageController do
     end
   end
 
+  def download(conn, %{"audio" => file}) do
+    #path = "/mnt/hdd/yt3/" <> file
+    conn
+    |> send_file(200, file)
+  end
+
   def play(conn, %{"audio" => file}) do
     #path = "/mnt/hdd/yt3/" <> file
   

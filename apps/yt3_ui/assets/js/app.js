@@ -18,6 +18,7 @@ import socket from "./socket"
 
 const channel = socket.channel("sources:ready", {})
 const playButton = document.getElementById("play")
+const downloadButton = document.getElementById("download")
 const urlInput = document.getElementById("url")
 const errorMessageElement = document.getElementById("error")
 const infoMessageElement = document.getElementById("info")
@@ -71,7 +72,11 @@ channel.on("file", payload => {
   playButton.innerHTML = stopSVGElement
   playButton.removeEventListener("click", playEventHandler)
   playButton.addEventListener("click", stopEventHandler)
+  //downloadButton.addEventListener("click", downloadEventHandler(payload.file))
+  downloadButton.style.display = "visible";
 })
 
 playButton.addEventListener("click", playEventHandler)
+downloadButton.style.display = "none";
+
 
