@@ -15,12 +15,26 @@ import "phoenix_html"
 //
 // Local files can be imported directly using relative paths, for example:
 import socket from "./socket"
-
-import {
-    Elm
-} from "../elm/src/Main.elm";
+import { Elm } from "../elm/src/Main.elm"
 
 const app = Elm.Main.init({
   node: document.getElementById('elm-node'),
-  flags: []
+  flags: ""
 });
+
+const channel = socket.channel("sources:ready", {})
+channel.join()
+
+app.ports.url.subscribe(url => {
+  channel.push('url', url)
+})
+
+channel.on('meta', meta => {
+  console.log(meta)
+  app.ports.meta.send(meta.meta)
+})
+
+channel.on('file', file => {
+  console.log(file)
+  app.ports.file.send(file)
+})
