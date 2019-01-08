@@ -22,8 +22,8 @@ main =
 
 
 type alias Meta =
-    { title : String
-    ,length_seconds : String
+    { title : Maybe String
+    , thumbnail_url : Maybe String
     }
 
 
@@ -44,8 +44,8 @@ init : String -> ( Model, Cmd Msg )
 init uri =
     ( { url = uri
       , meta =
-            { title = ""
-            , length_seconds = ""
+            { title = Nothing
+            , thumbnail_url = Nothing
             }
       , file =
             { file = ""
@@ -88,7 +88,7 @@ update msg model =
                     ( { model | meta = metaInfo }, Cmd.none )
 
                 _ ->
-                  Debug.todo "ERROR DECODING"
+                    Debug.todo "ERROR DECODING"
 
         FileMsg value ->
             let
@@ -115,8 +115,8 @@ port file : (E.Value -> msg) -> Sub msg
 decodeMeta : D.Decoder Meta
 decodeMeta =
     D.map2 Meta
-        (D.field "title" D.string)
-        (D.field "length_seconds" D.string)
+        (D.maybe (D.field "title" D.string))
+        (D.maybe (D.field "thumbnail_url" D.string))
 
 
 decodeFile : D.Decoder File
@@ -167,12 +167,38 @@ view model =
             ]
         , div [ class "meta" ]
             [ div
-                [ class "meta-info" ]
-                [ viewMeta model.meta ]
+                [ class "meta-title" ]
+                [ viewMetaTitle model.meta.title ]
+            , div
+                [ class "meta-thumbnail" ]
+                [ viewMetaImage model.meta.thumbnail_url ]
+            ]
+        , div [ class "audio-player" ]
+            [ audio
+                [ src model.file.file
+                , id "audio-player"
+                , controls True
+                ]
+                []
             ]
         ]
 
 
-viewMeta : Meta -> Html Msg
-viewMeta metaInfo =
-    p [ class "title" ] [ text metaInfo.title ]
+viewMetaTitle : Maybe String -> Html Msg
+viewMetaTitle metaTitle =
+    case metaTitle of
+        Just title ->
+            p [ class "title" ] [ text ("Playing " ++ title) ]
+
+        Nothing ->
+            p [ class "title" ] [ text "Add Youtube URL" ]
+
+
+viewMetaImage : Maybe String -> Html Msg
+viewMetaImage metaImage =
+    case metaImage of
+        Just imageUrl ->
+            img [ src imageUrl ] []
+
+        Nothing ->
+            Html.text ""

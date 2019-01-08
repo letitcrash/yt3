@@ -263,9 +263,9 @@ label.main:hover:before {
 }
 
 .title {
-  width: 215px;
-  text-align: left;
-  text-indent: 15px;
+ // width: 215px;
+ // text-align: left;
+  //text-indent: 15px;
   transition: all 0.11s ease-in;
 }
 
@@ -443,10 +443,10 @@ td > #heart8:checked ~ label.zmr:before {
   color: #fff;
   font-size: 26px;
   line-height: 26px;
-  width: 216px;
+  width: 516px;
   height: 35px;
   position: absolute;
-  bottom: 100px;
+  bottom: 500px;
   left: 48%;
   transform: translate(-50%, 0);
   z-index: 10;
