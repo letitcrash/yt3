@@ -17,7 +17,8 @@ defmodule YT3 do
 
       Task.start(fn ->
         with {:ok, file} <- Downloader.get(provider, url) do
-          Yt3UiWeb.Endpoint.broadcast! "sources:ready", "file", %{id: id, file: file}
+          uri = "/play?audio=#{file}"
+          Yt3UiWeb.Endpoint.broadcast! "sources:ready", "file", %{id: id, file: uri}
         end
       end)
     end

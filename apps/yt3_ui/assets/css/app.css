@@ -612,5 +612,5 @@ td > #repeat:checked ~ label.repeat:before {
 }
 
 audio {
-  visibility: hidden;
+//  visibility: hidden;
 }

@@ -35,6 +35,7 @@ type alias File =
 
 type alias Model =
     { url : String
+    , mediaType : String
     , meta : Meta
     , file : File
     }
@@ -43,6 +44,7 @@ type alias Model =
 init : String -> ( Model, Cmd Msg )
 init uri =
     ( { url = uri
+      , mediaType = "audio/mpeg"
       , meta =
             { title = Nothing
             , thumbnail_url = Nothing
