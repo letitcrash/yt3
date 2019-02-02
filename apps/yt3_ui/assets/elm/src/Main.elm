@@ -193,7 +193,7 @@ viewMetaTitle metaTitle =
             p [ class "title" ] [ text ("Playing " ++ title) ]
 
         Nothing ->
-            p [ class "title" ] [ text "Add Youtube URL" ]
+            p [ class "title" ] [ text "Add Youtube URL and Stream MP3 in background" ]
 
 
 viewMetaImage : Maybe String -> Html Msg
